@@ -1,11 +1,11 @@
 {
-    "name": "horasmedicas",
-    "short_name": "horasmedicas",
+    "name": "Horas Médicas",
+    "short_name": "Horas Médicas",
     "start_url": ".",
     "display": "standalone",
     "background_color": "#0175C2",
     "theme_color": "#0175C2",
-    "description": "A new Flutter project.",
+    "description": "Aplicación para acceder rápidamente a las páginas web de clínicas médicas en Rancagua y reservar horas médicas.",
     "orientation": "portrait-primary",
     "prefer_related_applications": false,
     "icons": [

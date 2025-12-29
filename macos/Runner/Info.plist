@@ -28,11 +28,12 @@
 	<string>MainMenu</string>
 	<key>NSPrincipalClass</key>
 	<string>NSApplication</string>
-	<!-- Permisos para abrir URLs (necesario para macOS y url_launcher) -->
+	<!-- Permisos para abrir URLs y mailto (necesario para macOS y url_launcher) -->
 	<key>LSApplicationQueriesSchemes</key>
 	<array>
 		<string>https</string>
 		<string>http</string>
+		<string>mailto</string>
 	</array>
 	<!-- Configuración de seguridad de red -->
 	<key>NSAppTransportSecurity</key>

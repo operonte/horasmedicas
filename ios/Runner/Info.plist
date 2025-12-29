@@ -45,11 +45,12 @@
 	<true/>
 	<key>UIApplicationSupportsIndirectInputEvents</key>
 	<true/>
-	<!-- Permisos para abrir URLs (necesario para iOS y url_launcher) -->
+	<!-- Permisos para abrir URLs y mailto (necesario para iOS y url_launcher) -->
 	<key>LSApplicationQueriesSchemes</key>
 	<array>
 		<string>https</string>
 		<string>http</string>
+		<string>mailto</string>
 	</array>
 	<!-- Configuración de seguridad de red -->
 	<key>NSAppTransportSecurity</key>

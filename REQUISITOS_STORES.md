@@ -15,6 +15,7 @@ Este documento resume las configuraciones realizadas y las recomendaciones adici
 #### Permisos Configurados:
 - ✅ `INTERNET` - Necesario para abrir URLs
 - ✅ Queries para `https` y `http` (Android 11+)
+- ✅ Query para `mailto` (correo electrónico)
 - ✅ Nombre de la app actualizado: "Horas Médicas"
 
 #### Archivos Modificados:
@@ -48,7 +49,7 @@ Este documento resume las configuraciones realizadas y las recomendaciones adici
 ### 3. iOS (App Store)
 
 #### Configuraciones Realizadas:
-- ✅ `LSApplicationQueriesSchemes` para `https` y `http`
+- ✅ `LSApplicationQueriesSchemes` para `https`, `http` y `mailto`
 - ✅ `NSAppTransportSecurity` configurado correctamente
 - ✅ Nombre de la app: "Horas Médicas"
 
@@ -105,7 +106,7 @@ Este documento resume las configuraciones realizadas y las recomendaciones adici
 ### 5. macOS (Mac App Store)
 
 #### Configuraciones Realizadas:
-- ✅ `LSApplicationQueriesSchemes` para `https` y `http`
+- ✅ `LSApplicationQueriesSchemes` para `https`, `http` y `mailto`
 - ✅ `NSAppTransportSecurity` configurado
 
 #### Archivos Modificados:
@@ -172,4 +173,36 @@ Este documento resume las configuraciones realizadas y las recomendaciones adici
 4. **Versión**:
    - Actual: `1.0.0+1` en `pubspec.yaml`
    - Incrementa el número de versión para cada release
+
+## ✅ Verificación de Cumplimiento de Políticas
+
+### Google Play Store (Android)
+- ✅ **Política de Privacidad**: Disponible públicamente en URL HTTPS
+- ✅ **Permisos Mínimos**: Solo INTERNET (necesario para funcionalidad básica)
+- ✅ **No Recopilación de Datos**: La app no recopila datos personales (declarado en política)
+- ✅ **URLs Declaradas**: Queries para https, http y mailto correctamente declaradas
+- ✅ **Sin Permisos Sensibles**: No requiere ubicación, cámara, micrófono, contactos, etc.
+- ✅ **Acceso a Datos**: No accede a datos personales del usuario
+
+### Apple App Store (iOS/macOS)
+- ✅ **Política de Privacidad**: Disponible públicamente en URL HTTPS
+- ✅ **Info.plist Completo**: LSApplicationQueriesSchemes correctamente configurado
+- ✅ **NSAppTransportSecurity**: Configurado correctamente (solo HTTPS permitido)
+- ✅ **No Recopilación de Datos**: La app no recopila datos personales
+- ✅ **Privacy Labels**: No requiere labels especiales (no recopila datos)
+
+### Microsoft Store (Windows)
+- ✅ **Política de Privacidad**: Disponible públicamente en URL HTTPS
+- ✅ **Manifest Completo**: Configuración básica correcta
+- ✅ **Sin Permisos Especiales**: Solo requiere acceso a Internet
+- ✅ **No Recopilación de Datos**: La app no recopila datos personales
+
+### Características de Cumplimiento
+- ✅ **Transparencia**: Política de privacidad clara y accesible
+- ✅ **Minimización de Datos**: No recopila ningún dato personal
+- ✅ **Seguridad**: Solo usa conexiones HTTPS
+- ✅ **Permisos Justificados**: Todos los permisos son necesarios para la funcionalidad básica
+- ✅ **Contacto del Desarrollador**: Email disponible para consultas
+
+**Nota**: Esta aplicación cumple con las políticas básicas de todas las stores principales. La aplicación es simple y no requiere permisos sensibles ni recopila datos, lo que facilita su aprobación en las stores.
 
