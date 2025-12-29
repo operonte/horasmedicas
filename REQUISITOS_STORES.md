@@ -8,9 +8,7 @@ Este documento resume las configuraciones realizadas y las recomendaciones adici
 - ✅ Creado `privacy_policy.html` con política completa
 - ✅ Disponible en el repositorio: `privacy_policy.html`
 - ✅ **URL para stores (GitHub Pages - Vista renderizada)**: `https://operonte.github.io/horasmedicas/privacy_policy.html`
-- 📝 **Importante**: Para que esta URL funcione, debes activar GitHub Pages en Settings → Pages del repositorio
-- 📝 **Alternativa (URL raw)**: `https://raw.githubusercontent.com/operonte/horasmedicas/main/privacy_policy.html` (muestra código, no renderizado)
-- 📖 Ver instrucciones completas en: [GITHUB_PAGES_INSTRUCTIONS.md](GITHUB_PAGES_INSTRUCTIONS.md)
+- ✅ GitHub Pages activado y funcionando
 
 ### 2. Android (Google Play Store)
 

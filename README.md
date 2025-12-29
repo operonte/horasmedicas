@@ -94,10 +94,7 @@ flutter build ios --release
 ## 📄 Política de Privacidad
 
 La política de privacidad está disponible en:
-- [Política de Privacidad (Vista renderizada)](https://operonte.github.io/horasmedicas/privacy_policy.html)
-- [Ver código fuente en GitHub](https://github.com/operonte/horasmedicas/blob/main/privacy_policy.html)
-
-> **Nota:** Para activar la vista renderizada, necesitas habilitar GitHub Pages en la configuración del repositorio. Ver instrucciones en [GITHUB_PAGES_INSTRUCTIONS.md](GITHUB_PAGES_INSTRUCTIONS.md)
+- [Política de Privacidad](https://operonte.github.io/horasmedicas/privacy_policy.html)
 
 ## 👨‍💻 Desarrollador
 
