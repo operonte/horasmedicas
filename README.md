@@ -31,7 +31,7 @@ Una aplicación Flutter moderna y práctica para acceder rápidamente a las pág
 
 1. Clona el repositorio:
 ```bash
-git clone https://github.com/tu-usuario/horasmedicas.git
+git clone https://github.com/operonte/horasmedicas.git
 cd horasmedicas
 ```
 
@@ -49,13 +49,13 @@ flutter run
 
 ### 🚀 Descarga Rápida
 
-**[⬇️ Descargar APK (Última Versión)](https://github.com/tu-usuario/horasmedicas/releases/latest)**
+**[⬇️ Descargar APK (Última Versión)](https://github.com/operonte/horasmedicas/releases/latest)**
 
 Haz clic en el botón de arriba para ir directamente a la página del último release y descargar la APK.
 
 ### 📋 Ver Todas las Versiones
 
-Visita la sección de [Releases](https://github.com/tu-usuario/horasmedicas/releases) para ver todas las versiones disponibles, notas de lanzamiento y archivos de descarga.
+Visita la sección de [Releases](https://github.com/operonte/horasmedicas/releases) para ver todas las versiones disponibles, notas de lanzamiento y archivos de descarga.
 
 ### 📱 Instalación en Android
 
