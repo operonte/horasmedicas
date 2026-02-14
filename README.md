@@ -5,10 +5,13 @@ Aplicación Flutter para acceder rápidamente a las páginas web de clínicas m�
 ## Características
 
 - Acceso directo a 8 clínicas médicas en Rancagua
+- Búsqueda y filtro de clínicas por nombre
+- Iconos reales de cada sitio web (favicons con caché)
 - Navegación rápida a sitios web de reserva de horas
-- Interfaz Material 3 moderna
+- Interfaz Material 3 con modo oscuro
 - Pantallas de Configuración y Acerca de
 - Política de privacidad integrada
+- Mensajes de error amigables para problemas de conexión
 
 ## Clínicas incluidas
 
@@ -35,6 +38,10 @@ flutter build apk --release
 ```
 
 El APK se genera en `build/app/outputs/flutter-apk/app-release.apk`
+
+### Descargar APK
+
+**[Descargar última versión](https://github.com/operonte/horasmedicas/releases/latest)**
 
 ## Política de Privacidad
 

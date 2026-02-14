@@ -14,7 +14,7 @@ class SettingsScreen extends StatelessWidget {
       appBar: AppBar(
         title: const Text('Configuración'),
         backgroundColor: Theme.of(context).colorScheme.primary,
-        foregroundColor: Colors.white,
+        foregroundColor: Theme.of(context).colorScheme.onPrimary,
       ),
       body: ListView(
         padding: const EdgeInsets.all(16),
@@ -111,23 +111,23 @@ class SettingsScreen extends StatelessWidget {
                       color: Theme.of(context).colorScheme.primary,
                     ),
                     const SizedBox(width: 12),
-                    const Expanded(
+                    Expanded(
                       child: Column(
                         crossAxisAlignment: CrossAxisAlignment.start,
                         children: [
-                          Text(
+                          const Text(
                             'Acerca de',
                             style: TextStyle(
                               fontSize: 18,
                               fontWeight: FontWeight.bold,
                             ),
                           ),
-                          SizedBox(height: 4),
+                          const SizedBox(height: 4),
                           Text(
                             'Información sobre la app y el desarrollador',
                             style: TextStyle(
                               fontSize: 14,
-                              color: Colors.grey,
+                              color: Theme.of(context).textTheme.bodySmall?.color,
                             ),
                           ),
                         ],
@@ -160,9 +160,9 @@ class SettingsScreen extends StatelessWidget {
                   );
                   if (!launched && context.mounted) {
                     ScaffoldMessenger.of(context).showSnackBar(
-                      const SnackBar(
-                        content: Text('No se pudo abrir el enlace'),
-                        backgroundColor: Colors.red,
+                      SnackBar(
+                        content: const Text('No se pudo abrir el enlace'),
+                        backgroundColor: Theme.of(context).colorScheme.error,
                         behavior: SnackBarBehavior.floating,
                       ),
                     );
@@ -171,8 +171,8 @@ class SettingsScreen extends StatelessWidget {
                   if (context.mounted) {
                     ScaffoldMessenger.of(context).showSnackBar(
                       SnackBar(
-                        content: Text('Error: ${e.toString()}'),
-                        backgroundColor: Colors.red,
+                        content: const Text('Error al abrir. Comprueba tu conexión.'),
+                        backgroundColor: Theme.of(context).colorScheme.error,
                         behavior: SnackBarBehavior.floating,
                       ),
                     );
@@ -189,23 +189,23 @@ class SettingsScreen extends StatelessWidget {
                       color: Theme.of(context).colorScheme.primary,
                     ),
                     const SizedBox(width: 12),
-                    const Expanded(
+                    Expanded(
                       child: Column(
                         crossAxisAlignment: CrossAxisAlignment.start,
                         children: [
-                          Text(
+                          const Text(
                             'Política de Privacidad',
                             style: TextStyle(
                               fontSize: 18,
                               fontWeight: FontWeight.bold,
                             ),
                           ),
-                          SizedBox(height: 4),
+                          const SizedBox(height: 4),
                           Text(
                             'Lee nuestra política de privacidad',
                             style: TextStyle(
                               fontSize: 14,
-                              color: Colors.grey,
+                              color: Theme.of(context).textTheme.bodySmall?.color,
                             ),
                           ),
                         ],

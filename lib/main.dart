@@ -1,10 +1,10 @@
 import 'package:flutter/material.dart';
 import 'package:flutter/foundation.dart';
 import 'package:url_launcher/url_launcher.dart';
+import 'package:cached_network_image/cached_network_image.dart';
 
 import 'models/clinic_link.dart';
 import 'screens/settings_screen.dart';
-import 'utils/url_utils.dart';
 
 void main() {
   runApp(const MyApp());
@@ -21,17 +21,34 @@ class MyApp extends StatelessWidget {
         colorScheme: ColorScheme.fromSeed(seedColor: Colors.blue),
         useMaterial3: true,
       ),
+      darkTheme: ThemeData(
+        colorScheme: ColorScheme.fromSeed(seedColor: Colors.blue, brightness: Brightness.dark),
+        useMaterial3: true,
+      ),
+      themeMode: ThemeMode.system,
       home: const LinksPage(),
     );
   }
 }
 
-class LinksPage extends StatelessWidget {
+class LinksPage extends StatefulWidget {
   const LinksPage({super.key});
 
-  static const _clinics = ClinicLink.availableClinics;
+  @override
+  State<LinksPage> createState() => _LinksPageState();
+}
 
-  Future<void> _launchURL(String url, BuildContext context) async {
+class _LinksPageState extends State<LinksPage> {
+  static const _clinics = ClinicLink.availableClinics;
+  String _searchQuery = '';
+
+  List<ClinicLink> get _filteredClinics {
+    if (_searchQuery.isEmpty) return _clinics;
+    final query = _searchQuery.toLowerCase();
+    return _clinics.where((c) => c.title.toLowerCase().contains(query)).toList();
+  }
+
+  Future<void> _launchURL(String url, String clinicName, BuildContext context) async {
     try {
       final uri = Uri.parse(url);
       final launchMode = kIsWeb
@@ -43,8 +60,9 @@ class LinksPage extends StatelessWidget {
       } else if (context.mounted) {
         ScaffoldMessenger.of(context).showSnackBar(
           SnackBar(
-            content: Text('No se pudo abrir $url'),
-            backgroundColor: Colors.red,
+            content: Text('No se pudo abrir la página de $clinicName. Comprueba tu conexión a internet.'),
+            backgroundColor: Theme.of(context).colorScheme.error,
+            behavior: SnackBarBehavior.floating,
           ),
         );
       }
@@ -52,8 +70,9 @@ class LinksPage extends StatelessWidget {
       if (context.mounted) {
         ScaffoldMessenger.of(context).showSnackBar(
           SnackBar(
-            content: Text('Error: ${e.toString()}'),
-            backgroundColor: Colors.red,
+            content: const Text('Error al abrir. Comprueba tu conexión a internet.'),
+            backgroundColor: Theme.of(context).colorScheme.error,
+            behavior: SnackBarBehavior.floating,
           ),
         );
       }
@@ -62,6 +81,8 @@ class LinksPage extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
+    final filtered = _filteredClinics;
+
     return Scaffold(
       appBar: AppBar(
         backgroundColor: Theme.of(context).colorScheme.inversePrimary,
@@ -69,6 +90,7 @@ class LinksPage extends StatelessWidget {
         actions: [
           IconButton(
             icon: const Icon(Icons.settings),
+            tooltip: 'Configuración',
             onPressed: () {
               Navigator.push(
                 context,
@@ -77,69 +99,94 @@ class LinksPage extends StatelessWidget {
                 ),
               );
             },
-            tooltip: 'Configuración',
           ),
         ],
       ),
-      body: Padding(
-        padding: const EdgeInsets.all(16),
-        child: ListView.builder(
-          itemCount: _clinics.length,
-          itemBuilder: (context, index) {
-            final clinic = _clinics[index];
-            final faviconUrl = UrlValidator.getFaviconUrl(clinic.domain);
-
-            return Card(
-              margin: const EdgeInsets.only(bottom: 12),
-              elevation: 2,
-              child: ListTile(
-                leading: CircleAvatar(
-                  backgroundColor: Theme.of(context)
-                      .colorScheme
-                      .surfaceContainerHighest,
-                  child: ClipOval(
-                    child: Image.network(
-                      faviconUrl,
-                      width: 40,
-                      height: 40,
-                      fit: BoxFit.cover,
-                      errorBuilder: (context, error, stackTrace) {
-                        return Icon(
-                          Icons.local_hospital,
-                          color: Theme.of(context).colorScheme.primary,
-                          size: 24,
-                        );
-                      },
-                      loadingBuilder: (context, child, loadingProgress) {
-                        if (loadingProgress == null) return child;
-                        return SizedBox(
-                          width: 24,
-                          height: 24,
-                          child: CircularProgressIndicator(
-                            strokeWidth: 2,
-                            value: loadingProgress.expectedTotalBytes != null
-                                ? loadingProgress.cumulativeBytesLoaded /
-                                    loadingProgress.expectedTotalBytes!
-                                : null,
-                          ),
-                        );
-                      },
-                    ),
-                  ),
+      body: Column(
+        children: [
+          Padding(
+            padding: const EdgeInsets.fromLTRB(16, 8, 16, 0),
+            child: TextField(
+              decoration: InputDecoration(
+                hintText: 'Buscar clínica...',
+                prefixIcon: const Icon(Icons.search),
+                border: OutlineInputBorder(
+                  borderRadius: BorderRadius.circular(12),
                 ),
-                title: Text(
-                  clinic.title,
-                  style: const TextStyle(
-                    fontSize: 18,
-                    fontWeight: FontWeight.w500,
-                  ),
-                ),
-                trailing: const Icon(Icons.open_in_new),
-                onTap: () => _launchURL(clinic.url, context),
+                filled: true,
               ),
-            );
-          },
-        ),
+              onChanged: (value) => setState(() => _searchQuery = value),
+            ),
+          ),
+          Expanded(
+            child: filtered.isEmpty
+                ? Center(
+                    child: Padding(
+                      padding: const EdgeInsets.all(24),
+                      child: Text(
+                        _searchQuery.isEmpty
+                            ? 'No hay clínicas disponibles'
+                            : 'No se encontraron clínicas para "$_searchQuery"',
+                        textAlign: TextAlign.center,
+                        style: Theme.of(context).textTheme.bodyLarge,
+                      ),
+                    ),
+                  )
+                : ListView.builder(
+                    padding: const EdgeInsets.all(16),
+                    itemCount: filtered.length,
+                    itemBuilder: (context, index) {
+                      final clinic = filtered[index];
+
+                      return Card(
+                        margin: const EdgeInsets.only(bottom: 12),
+                        elevation: 2,
+                        child: Semantics(
+                          label: 'Abrir página web de ${clinic.title}',
+                          button: true,
+                          child: ListTile(
+                            leading: CircleAvatar(
+                              backgroundColor: Theme.of(context)
+                                  .colorScheme
+                                  .surfaceContainerHighest,
+                              child: ClipOval(
+                                child: CachedNetworkImage(
+                                  imageUrl: clinic.faviconUrl,
+                                  width: 40,
+                                  height: 40,
+                                  fit: BoxFit.cover,
+                                  placeholder: (context, url) => SizedBox(
+                                    width: 24,
+                                    height: 24,
+                                    child: CircularProgressIndicator(
+                                      strokeWidth: 2,
+                                      color: Theme.of(context).colorScheme.primary,
+                                    ),
+                                  ),
+                                  errorWidget: (context, url, error) => Icon(
+                                    Icons.local_hospital,
+                                    color: Theme.of(context).colorScheme.primary,
+                                    size: 24,
+                                  ),
+                                ),
+                              ),
+                            ),
+                            title: Text(
+                              clinic.title,
+                              style: const TextStyle(
+                                fontSize: 18,
+                                fontWeight: FontWeight.w500,
+                              ),
+                            ),
+                            trailing: const Icon(Icons.open_in_new),
+                            onTap: () => _launchURL(clinic.url, clinic.title, context),
+                          ),
+                        ),
+                      );
+                    },
+                  ),
+          ),
+        ],
       ),
     );
   }

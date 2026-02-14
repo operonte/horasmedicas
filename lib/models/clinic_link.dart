@@ -10,6 +10,10 @@ class ClinicLink {
     required this.domain,
   });
 
+  /// URL del favicon de la clínica (usa el icono real de cada sitio web).
+  String get faviconUrl =>
+      'https://www.google.com/s2/favicons?domain=${Uri.parse(url).host}&sz=128';
+
   /// Lista de clínicas disponibles en Rancagua.
   static const List<ClinicLink> availableClinics = [
     ClinicLink(

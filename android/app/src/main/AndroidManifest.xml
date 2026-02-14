@@ -1,9 +1,13 @@
-<manifest xmlns:android="http://schemas.android.com/apk/res/android">
+<manifest xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools">
+    <!-- Permiso para internet: abrir URLs, favicons y política de privacidad -->
     <uses-permission android:name="android.permission.INTERNET" />
     <application
         android:label="Horas Médicas"
         android:name="${applicationName}"
-        android:icon="@mipmap/ic_launcher">
+        android:icon="@mipmap/ic_launcher"
+        android:usesCleartextTraffic="false"
+        tools:targetApi="31">
         <activity
             android:name=".MainActivity"
             android:exported="true"
@@ -32,23 +36,27 @@
             android:name="flutterEmbedding"
             android:value="2" />
     </application>
-    <!-- Required to query activities that can process text, see:
-         https://developer.android.com/training/package-visibility and
-         https://developer.android.com/reference/android/content/Intent#ACTION_PROCESS_TEXT.
-
-         In particular, this is used by the Flutter engine in io.flutter.plugin.text.ProcessTextPlugin. -->
+    <!-- Package visibility (Android 11+): necesario para url_launcher
+         - canLaunchUrl() y launchUrl() requieren declarar los esquemas que se abrirán -->
     <queries>
         <intent>
             <action android:name="android.intent.action.PROCESS_TEXT"/>
             <data android:mimeType="text/plain"/>
         </intent>
+        <!-- Abrir enlaces https (clínicas, política de privacidad) -->
         <intent>
             <action android:name="android.intent.action.VIEW" />
             <data android:scheme="https" />
         </intent>
+        <!-- Abrir enlaces http (compatibilidad con algunos sitios) -->
         <intent>
             <action android:name="android.intent.action.VIEW" />
             <data android:scheme="http" />
+        </intent>
+        <!-- Abrir cliente de correo (mailto) -->
+        <intent>
+            <action android:name="android.intent.action.VIEW" />
+            <data android:scheme="mailto" />
         </intent>
         <intent>
             <action android:name="android.intent.action.SENDTO" />

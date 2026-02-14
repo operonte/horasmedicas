@@ -52,9 +52,9 @@ class _AboutScreenState extends State<AboutScreen> {
         await launchUrl(emailUri, mode: LaunchMode.externalApplication);
       } else if (mounted) {
         ScaffoldMessenger.of(context).showSnackBar(
-          const SnackBar(
-            content: Text('No se pudo abrir el cliente de correo'),
-            backgroundColor: Colors.red,
+          SnackBar(
+            content: const Text('No se pudo abrir el cliente de correo'),
+            backgroundColor: Theme.of(context).colorScheme.error,
             behavior: SnackBarBehavior.floating,
           ),
         );
@@ -64,7 +64,7 @@ class _AboutScreenState extends State<AboutScreen> {
         ScaffoldMessenger.of(context).showSnackBar(
           SnackBar(
             content: Text('Error: ${e.toString()}'),
-            backgroundColor: Colors.red,
+            backgroundColor: Theme.of(context).colorScheme.error,
             behavior: SnackBarBehavior.floating,
           ),
         );
@@ -82,9 +82,9 @@ class _AboutScreenState extends State<AboutScreen> {
       );
       if (!launched && mounted) {
         ScaffoldMessenger.of(context).showSnackBar(
-          const SnackBar(
-            content: Text('No se pudo abrir el enlace'),
-            backgroundColor: Colors.red,
+          SnackBar(
+            content: const Text('No se pudo abrir el enlace'),
+            backgroundColor: Theme.of(context).colorScheme.error,
             behavior: SnackBarBehavior.floating,
           ),
         );
@@ -94,7 +94,7 @@ class _AboutScreenState extends State<AboutScreen> {
         ScaffoldMessenger.of(context).showSnackBar(
           SnackBar(
             content: Text('Error: ${e.toString()}'),
-            backgroundColor: Colors.red,
+            backgroundColor: Theme.of(context).colorScheme.error,
             behavior: SnackBarBehavior.floating,
           ),
         );
@@ -108,7 +108,7 @@ class _AboutScreenState extends State<AboutScreen> {
       appBar: AppBar(
         title: const Text('Acerca de'),
         backgroundColor: Theme.of(context).colorScheme.primary,
-        foregroundColor: Colors.white,
+        foregroundColor: Theme.of(context).colorScheme.onPrimary,
       ),
       body: Container(
         decoration: BoxDecoration(
