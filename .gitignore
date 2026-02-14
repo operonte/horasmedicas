@@ -44,5 +44,5 @@ app.*.map.json
 /android/app/profile
 /android/app/release
 
-# APK de release (se suben via GitHub Releases)
-/release/*.apk
+# APK de release (incluido en repo privado como respaldo)
+# /release/*.apk
