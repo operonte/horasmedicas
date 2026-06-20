@@ -20,10 +20,13 @@ class SettingsController extends ChangeNotifier {
   /// Carga las preferencias guardadas. Llamar una vez al iniciar la app.
   void load() {
     final modeIndex = _prefs.getInt(_kThemeMode);
-    if (modeIndex != null && modeIndex >= 0 && modeIndex < ThemeMode.values.length) {
+    if (modeIndex != null &&
+        modeIndex >= 0 &&
+        modeIndex < ThemeMode.values.length) {
       _themeMode = ThemeMode.values[modeIndex];
     }
-    _favorites = (_prefs.getStringList(_kFavorites) ?? const <String>[]).toSet();
+    _favorites = (_prefs.getStringList(_kFavorites) ?? const <String>[])
+        .toSet();
   }
 
   Future<void> setThemeMode(ThemeMode mode) async {

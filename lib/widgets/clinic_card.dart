@@ -70,7 +70,9 @@ class ClinicCard extends StatelessWidget {
                   isFavorite ? Icons.star : Icons.star_border,
                   color: isFavorite ? scheme.primary : null,
                 ),
-                tooltip: isFavorite ? 'Quitar de favoritos' : 'Marcar como favorito',
+                tooltip: isFavorite
+                    ? 'Quitar de favoritos'
+                    : 'Marcar como favorito',
                 onPressed: onToggleFavorite,
               ),
               PopupMenuButton<_ClinicAction>(

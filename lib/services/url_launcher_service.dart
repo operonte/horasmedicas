@@ -58,8 +58,8 @@ class UrlLauncherService {
       final mode = kIsWeb
           ? LaunchMode.platformDefault
           : (uri.scheme == 'https'
-              ? LaunchMode.externalApplication
-              : LaunchMode.platformDefault);
+                ? LaunchMode.externalApplication
+                : LaunchMode.platformDefault);
 
       final launched = await launchUrl(uri, mode: mode);
       if (!launched) {

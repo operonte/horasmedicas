@@ -1,0 +1,12 @@
+<?xml version="1.0" encoding="utf-8"?>
+<!-- Configuración de seguridad de red (OWASP MASVS-NETWORK).
+     - cleartextTrafficPermitted="false": prohíbe HTTP en claro en toda la app.
+     - trust-anchors solo "system": la app NO confía en CAs instaladas por el
+       usuario, lo que endurece frente a ataques MITM con certificados inyectados. -->
+<network-security-config>
+    <base-config cleartextTrafficPermitted="false">
+        <trust-anchors>
+            <certificates src="system" />
+        </trust-anchors>
+    </base-config>
+</network-security-config>

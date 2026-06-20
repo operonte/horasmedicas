@@ -144,24 +144,27 @@ class _LinksPageState extends State<LinksPage> {
       );
     }
 
-    final favorites =
-        matches.where((c) => controller.isFavorite(c.domain)).toList();
-    final others =
-        matches.where((c) => !controller.isFavorite(c.domain)).toList();
+    final favorites = matches
+        .where((c) => controller.isFavorite(c.domain))
+        .toList();
+    final others = matches
+        .where((c) => !controller.isFavorite(c.domain))
+        .toList();
     final showHeaders = favorites.isNotEmpty;
 
     Widget card(ClinicLink clinic) => ClinicCard(
-          clinic: clinic,
-          isFavorite: controller.isFavorite(clinic.domain),
-          onToggleFavorite: () => controller.toggleFavorite(clinic.domain),
-        );
+      clinic: clinic,
+      isFavorite: controller.isFavorite(clinic.domain),
+      onToggleFavorite: () => controller.toggleFavorite(clinic.domain),
+    );
 
     return ListView(
       padding: const EdgeInsets.all(16),
       children: [
         if (showHeaders) _SectionHeader('Favoritos'),
         ...favorites.map(card),
-        if (showHeaders && others.isNotEmpty) _SectionHeader('Todas las clínicas'),
+        if (showHeaders && others.isNotEmpty)
+          _SectionHeader('Todas las clínicas'),
         ...others.map(card),
       ],
     );
@@ -180,9 +183,9 @@ class _SectionHeader extends StatelessWidget {
       child: Text(
         title,
         style: Theme.of(context).textTheme.titleSmall?.copyWith(
-              color: Theme.of(context).colorScheme.primary,
-              fontWeight: FontWeight.bold,
-            ),
+          color: Theme.of(context).colorScheme.primary,
+          fontWeight: FontWeight.bold,
+        ),
       ),
     );
   }

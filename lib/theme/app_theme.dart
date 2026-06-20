@@ -8,15 +8,15 @@ class AppTheme {
   static const Color brandColor = Color(0xFF0D9488);
 
   static ThemeData light() => ThemeData(
-        colorScheme: ColorScheme.fromSeed(seedColor: brandColor),
-        useMaterial3: true,
-      );
+    colorScheme: ColorScheme.fromSeed(seedColor: brandColor),
+    useMaterial3: true,
+  );
 
   static ThemeData dark() => ThemeData(
-        colorScheme: ColorScheme.fromSeed(
-          seedColor: brandColor,
-          brightness: Brightness.dark,
-        ),
-        useMaterial3: true,
-      );
+    colorScheme: ColorScheme.fromSeed(
+      seedColor: brandColor,
+      brightness: Brightness.dark,
+    ),
+    useMaterial3: true,
+  );
 }
