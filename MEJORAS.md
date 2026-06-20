@@ -1,8 +1,29 @@
 # Lista de Mejoras - Horas Médicas
 
+## Implementado (v1.2.0)
+
+### Seguridad (OWASP MASVS / Mobile Top 10)
+- Secretos de firma fuera del repo (keystore y `key.properties` en `.gitignore`,
+  historial de git limpiado).
+- Avatares generados localmente en lugar de favicons de Google (sin fuga de
+  privacidad ni dependencia de red de terceros).
+- Apertura de URLs con lista blanca de esquemas (`https`, `mailto`, `tel`).
+- `allowBackup=false` + reglas de extracción de datos (Android 12+).
+- Solo HTTPS (Android `usesCleartextTraffic=false`, iOS ATS estricto, sin `http`).
+- Ofuscación y reducción de código/recursos (R8) en release.
+- `SECURITY.md` con la política de seguridad.
+
+### Funcionalidad / UX
+- Tema configurable y persistente (claro / oscuro / sistema) con `shared_preferences`.
+- Favoritos persistentes (se anclan arriba de la lista).
+- Acción "Cómo llegar" por clínica (búsqueda en Google Maps).
+- Búsqueda por nombre **y** dominio, con botón de limpiar.
+- Color de marca unificado (teal `#0D9488`) en toda la app.
+- Servicio de apertura de URLs centralizado (sin código duplicado).
+- Más pruebas (búsqueda, estado vacío, favoritos, modelo).
+
 ## Implementado (v1.1.0)
 
-- Cache de favicons con `cached_network_image`
 - Búsqueda/filtro de clínicas
 - Mensajes de error amigables (conexión a internet)
 - Accesibilidad (semántica en ListTiles)

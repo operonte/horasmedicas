@@ -1,88 +1,67 @@
 import 'package:flutter/material.dart';
-import 'package:flutter/foundation.dart';
-import 'package:url_launcher/url_launcher.dart';
-import 'package:cached_network_image/cached_network_image.dart';
+import 'package:shared_preferences/shared_preferences.dart';
 
 import 'models/clinic_link.dart';
 import 'screens/settings_screen.dart';
+import 'services/settings_controller.dart';
+import 'theme/app_theme.dart';
+import 'widgets/clinic_card.dart';
 
-void main() {
-  runApp(const MyApp());
+Future<void> main() async {
+  WidgetsFlutterBinding.ensureInitialized();
+  final prefs = await SharedPreferences.getInstance();
+  final controller = SettingsController(prefs)..load();
+  runApp(MyApp(controller: controller));
 }
 
 class MyApp extends StatelessWidget {
-  const MyApp({super.key});
+  const MyApp({super.key, required this.controller});
+
+  final SettingsController controller;
 
   @override
   Widget build(BuildContext context) {
-    return MaterialApp(
-      title: 'Horas Médicas',
-      theme: ThemeData(
-        colorScheme: ColorScheme.fromSeed(seedColor: Colors.blue),
-        useMaterial3: true,
-      ),
-      darkTheme: ThemeData(
-        colorScheme: ColorScheme.fromSeed(seedColor: Colors.blue, brightness: Brightness.dark),
-        useMaterial3: true,
-      ),
-      themeMode: ThemeMode.system,
-      home: const LinksPage(),
+    return ListenableBuilder(
+      listenable: controller,
+      builder: (context, _) {
+        return MaterialApp(
+          title: 'Horas Médicas',
+          theme: AppTheme.light(),
+          darkTheme: AppTheme.dark(),
+          themeMode: controller.themeMode,
+          home: LinksPage(controller: controller),
+        );
+      },
     );
   }
 }
 
 class LinksPage extends StatefulWidget {
-  const LinksPage({super.key});
+  const LinksPage({super.key, required this.controller});
+
+  final SettingsController controller;
 
   @override
   State<LinksPage> createState() => _LinksPageState();
 }
 
 class _LinksPageState extends State<LinksPage> {
-  static const _clinics = ClinicLink.availableClinics;
+  final _searchController = TextEditingController();
   String _searchQuery = '';
 
-  List<ClinicLink> get _filteredClinics {
-    if (_searchQuery.isEmpty) return _clinics;
-    final query = _searchQuery.toLowerCase();
-    return _clinics.where((c) => c.title.toLowerCase().contains(query)).toList();
+  @override
+  void dispose() {
+    _searchController.dispose();
+    super.dispose();
   }
 
-  Future<void> _launchURL(String url, String clinicName, BuildContext context) async {
-    try {
-      final uri = Uri.parse(url);
-      final launchMode = kIsWeb
-          ? LaunchMode.platformDefault
-          : LaunchMode.externalApplication;
-
-      if (await canLaunchUrl(uri)) {
-        await launchUrl(uri, mode: launchMode);
-      } else if (context.mounted) {
-        ScaffoldMessenger.of(context).showSnackBar(
-          SnackBar(
-            content: Text('No se pudo abrir la página de $clinicName. Comprueba tu conexión a internet.'),
-            backgroundColor: Theme.of(context).colorScheme.error,
-            behavior: SnackBarBehavior.floating,
-          ),
-        );
-      }
-    } catch (e) {
-      if (context.mounted) {
-        ScaffoldMessenger.of(context).showSnackBar(
-          SnackBar(
-            content: const Text('Error al abrir. Comprueba tu conexión a internet.'),
-            backgroundColor: Theme.of(context).colorScheme.error,
-            behavior: SnackBarBehavior.floating,
-          ),
-        );
-      }
-    }
+  void _clearSearch() {
+    _searchController.clear();
+    setState(() => _searchQuery = '');
   }
 
   @override
   Widget build(BuildContext context) {
-    final filtered = _filteredClinics;
-
     return Scaffold(
       appBar: AppBar(
         backgroundColor: Theme.of(context).colorScheme.inversePrimary,
@@ -95,7 +74,8 @@ class _LinksPageState extends State<LinksPage> {
               Navigator.push(
                 context,
                 MaterialPageRoute(
-                  builder: (context) => const SettingsScreen(),
+                  builder: (context) =>
+                      SettingsScreen(controller: widget.controller),
                 ),
               );
             },
@@ -106,87 +86,103 @@ class _LinksPageState extends State<LinksPage> {
         children: [
           Padding(
             padding: const EdgeInsets.fromLTRB(16, 8, 16, 0),
-            child: TextField(
-              decoration: InputDecoration(
-                hintText: 'Buscar clínica...',
-                prefixIcon: const Icon(Icons.search),
-                border: OutlineInputBorder(
-                  borderRadius: BorderRadius.circular(12),
+            child: Semantics(
+              textField: true,
+              label: 'Buscar clínica por nombre o dominio',
+              child: TextField(
+                controller: _searchController,
+                textInputAction: TextInputAction.search,
+                autocorrect: false,
+                decoration: InputDecoration(
+                  hintText: 'Buscar clínica...',
+                  prefixIcon: const Icon(Icons.search),
+                  suffixIcon: _searchQuery.isEmpty
+                      ? null
+                      : IconButton(
+                          icon: const Icon(Icons.clear),
+                          tooltip: 'Limpiar búsqueda',
+                          onPressed: _clearSearch,
+                        ),
+                  border: OutlineInputBorder(
+                    borderRadius: BorderRadius.circular(12),
+                  ),
+                  filled: true,
                 ),
-                filled: true,
+                onChanged: (value) => setState(() => _searchQuery = value),
               ),
-              onChanged: (value) => setState(() => _searchQuery = value),
             ),
           ),
           Expanded(
-            child: filtered.isEmpty
-                ? Center(
-                    child: Padding(
-                      padding: const EdgeInsets.all(24),
-                      child: Text(
-                        _searchQuery.isEmpty
-                            ? 'No hay clínicas disponibles'
-                            : 'No se encontraron clínicas para "$_searchQuery"',
-                        textAlign: TextAlign.center,
-                        style: Theme.of(context).textTheme.bodyLarge,
-                      ),
-                    ),
-                  )
-                : ListView.builder(
-                    padding: const EdgeInsets.all(16),
-                    itemCount: filtered.length,
-                    itemBuilder: (context, index) {
-                      final clinic = filtered[index];
-
-                      return Card(
-                        margin: const EdgeInsets.only(bottom: 12),
-                        elevation: 2,
-                        child: Semantics(
-                          label: 'Abrir página web de ${clinic.title}',
-                          button: true,
-                          child: ListTile(
-                            leading: CircleAvatar(
-                              backgroundColor: Theme.of(context)
-                                  .colorScheme
-                                  .surfaceContainerHighest,
-                              child: ClipOval(
-                                child: CachedNetworkImage(
-                                  imageUrl: clinic.faviconUrl,
-                                  width: 40,
-                                  height: 40,
-                                  fit: BoxFit.cover,
-                                  placeholder: (context, url) => SizedBox(
-                                    width: 24,
-                                    height: 24,
-                                    child: CircularProgressIndicator(
-                                      strokeWidth: 2,
-                                      color: Theme.of(context).colorScheme.primary,
-                                    ),
-                                  ),
-                                  errorWidget: (context, url, error) => Icon(
-                                    Icons.local_hospital,
-                                    color: Theme.of(context).colorScheme.primary,
-                                    size: 24,
-                                  ),
-                                ),
-                              ),
-                            ),
-                            title: Text(
-                              clinic.title,
-                              style: const TextStyle(
-                                fontSize: 18,
-                                fontWeight: FontWeight.w500,
-                              ),
-                            ),
-                            trailing: const Icon(Icons.open_in_new),
-                            onTap: () => _launchURL(clinic.url, clinic.title, context),
-                          ),
-                        ),
-                      );
-                    },
-                  ),
+            child: ListenableBuilder(
+              listenable: widget.controller,
+              builder: (context, _) => _buildList(context),
+            ),
           ),
         ],
+      ),
+    );
+  }
+
+  Widget _buildList(BuildContext context) {
+    final controller = widget.controller;
+    final matches = ClinicLink.availableClinics
+        .where((c) => c.matches(_searchQuery))
+        .toList();
+
+    if (matches.isEmpty) {
+      return Center(
+        child: Padding(
+          padding: const EdgeInsets.all(24),
+          child: Text(
+            _searchQuery.isEmpty
+                ? 'No hay clínicas disponibles'
+                : 'No se encontraron clínicas para "$_searchQuery"',
+            textAlign: TextAlign.center,
+            style: Theme.of(context).textTheme.bodyLarge,
+          ),
+        ),
+      );
+    }
+
+    final favorites =
+        matches.where((c) => controller.isFavorite(c.domain)).toList();
+    final others =
+        matches.where((c) => !controller.isFavorite(c.domain)).toList();
+    final showHeaders = favorites.isNotEmpty;
+
+    Widget card(ClinicLink clinic) => ClinicCard(
+          clinic: clinic,
+          isFavorite: controller.isFavorite(clinic.domain),
+          onToggleFavorite: () => controller.toggleFavorite(clinic.domain),
+        );
+
+    return ListView(
+      padding: const EdgeInsets.all(16),
+      children: [
+        if (showHeaders) _SectionHeader('Favoritos'),
+        ...favorites.map(card),
+        if (showHeaders && others.isNotEmpty) _SectionHeader('Todas las clínicas'),
+        ...others.map(card),
+      ],
+    );
+  }
+}
+
+class _SectionHeader extends StatelessWidget {
+  const _SectionHeader(this.title);
+
+  final String title;
+
+  @override
+  Widget build(BuildContext context) {
+    return Padding(
+      padding: const EdgeInsets.only(bottom: 8, top: 4),
+      child: Text(
+        title,
+        style: Theme.of(context).textTheme.titleSmall?.copyWith(
+              color: Theme.of(context).colorScheme.primary,
+              fontWeight: FontWeight.bold,
+            ),
       ),
     );
   }

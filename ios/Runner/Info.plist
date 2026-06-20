@@ -45,17 +45,16 @@
 	<true/>
 	<key>UIApplicationSupportsIndirectInputEvents</key>
 	<true/>
-	<!-- Esquemas para url_launcher: abrir enlaces y correo -->
+	<!-- Esquemas para url_launcher: solo HTTPS y correo (sin http en claro) -->
 	<key>LSApplicationQueriesSchemes</key>
 	<array>
 		<string>https</string>
-		<string>http</string>
 		<string>mailto</string>
 	</array>
 	<!-- App Store: solo usa HTTPS (encryption exempt), evita preguntas de export compliance -->
 	<key>ITSAppUsesNonExemptEncryption</key>
 	<false/>
-	<!-- Seguridad de red: permite cargar recursos HTTPS (favicons de Google) -->
+	<!-- Seguridad de red (ATS): solo HTTPS, sin cargas arbitrarias en claro -->
 	<key>NSAppTransportSecurity</key>
 	<dict>
 		<key>NSAllowsArbitraryLoads</key>

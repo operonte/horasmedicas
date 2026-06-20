@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
-import 'package:url_launcher/url_launcher.dart';
 import 'package:package_info_plus/package_info_plus.dart';
+
+import '../services/url_launcher_service.dart';
 
 class AboutScreen extends StatefulWidget {
   const AboutScreen({super.key});
@@ -10,9 +11,10 @@ class AboutScreen extends StatefulWidget {
 }
 
 class _AboutScreenState extends State<AboutScreen> {
-  String _version = '1.0.0';
+  String _version = '';
   bool _isLoading = true;
 
+  static const _email = 'cristian.bravo.droguett@gmail.com';
   static const _privacyUrl =
       'https://operonte.github.io/releases/horasmedicas/policies/privacy_policy.html';
 
@@ -33,73 +35,30 @@ class _AboutScreenState extends State<AboutScreen> {
       }
     } catch (e) {
       if (mounted) {
+        // Sin versión confiable: no mostramos un número inventado.
         setState(() {
-          _version = '1.0.0';
+          _version = '';
           _isLoading = false;
         });
       }
     }
   }
 
-  Future<void> _launchEmail() async {
-    try {
-      final emailUri = Uri(
-        scheme: 'mailto',
-        path: 'cristian.bravo.droguett@gmail.com',
-        query: 'subject=Consulta sobre Horas Médicas',
-      );
-      if (await canLaunchUrl(emailUri)) {
-        await launchUrl(emailUri, mode: LaunchMode.externalApplication);
-      } else if (mounted) {
-        ScaffoldMessenger.of(context).showSnackBar(
-          SnackBar(
-            content: const Text('No se pudo abrir el cliente de correo'),
-            backgroundColor: Theme.of(context).colorScheme.error,
-            behavior: SnackBarBehavior.floating,
-          ),
-        );
-      }
-    } catch (e) {
-      if (mounted) {
-        ScaffoldMessenger.of(context).showSnackBar(
-          SnackBar(
-            content: Text('Error: ${e.toString()}'),
-            backgroundColor: Theme.of(context).colorScheme.error,
-            behavior: SnackBarBehavior.floating,
-          ),
-        );
-      }
-    }
+  Future<void> _launchEmail() {
+    final emailUri = Uri(
+      scheme: 'mailto',
+      path: _email,
+      query: 'subject=Consulta sobre Horas Médicas',
+    );
+    return UrlLauncherService.open(
+      context,
+      emailUri.toString(),
+      errorContext: 'el cliente de correo',
+    );
   }
 
-  Future<void> _launchUrl(String url) async {
-    try {
-      final uri = Uri.parse(url);
-      final launched = await launchUrl(
-        uri,
-        mode: LaunchMode.platformDefault,
-        webOnlyWindowName: '_blank',
-      );
-      if (!launched && mounted) {
-        ScaffoldMessenger.of(context).showSnackBar(
-          SnackBar(
-            content: const Text('No se pudo abrir el enlace'),
-            backgroundColor: Theme.of(context).colorScheme.error,
-            behavior: SnackBarBehavior.floating,
-          ),
-        );
-      }
-    } catch (e) {
-      if (mounted) {
-        ScaffoldMessenger.of(context).showSnackBar(
-          SnackBar(
-            content: Text('Error: ${e.toString()}'),
-            backgroundColor: Theme.of(context).colorScheme.error,
-            behavior: SnackBarBehavior.floating,
-          ),
-        );
-      }
-    }
+  Future<void> _launchUrl(String url) {
+    return UrlLauncherService.open(context, url, errorContext: 'el enlace');
   }
 
   @override
@@ -117,7 +76,7 @@ class _AboutScreenState extends State<AboutScreen> {
             end: Alignment.bottomRight,
             colors: Theme.of(context).brightness == Brightness.dark
                 ? [const Color(0xFF353535), const Color(0xFF424242)]
-                : [Colors.blue.shade50, Colors.teal.shade50],
+                : [Colors.teal.shade50, Colors.cyan.shade50],
           ),
         ),
         child: SingleChildScrollView(
@@ -148,7 +107,7 @@ class _AboutScreenState extends State<AboutScreen> {
                 ),
               ),
               const SizedBox(height: 10),
-              if (!_isLoading)
+              if (!_isLoading && _version.isNotEmpty)
                 Container(
                   padding: const EdgeInsets.symmetric(horizontal: 16, vertical: 8),
                   decoration: BoxDecoration(

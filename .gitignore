@@ -44,5 +44,12 @@ app.*.map.json
 /android/app/profile
 /android/app/release
 
-# APK de release (incluido en repo privado como respaldo)
-# /release/*.apk
+# Secretos de firma — NUNCA versionar (repo público)
+android/key.properties
+*.jks
+*.keystore
+*.p12
+*.pem
+
+# APK de release (se publican como GitHub Release, no en el árbol del repo)
+/release/*.apk
