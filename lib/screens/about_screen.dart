@@ -16,7 +16,7 @@ class _AboutScreenState extends State<AboutScreen> {
 
   static const _email = 'cristian.bravo.droguett@gmail.com';
   static const _privacyUrl =
-      'https://operonte.github.io/releases/horasmedicas/policies/privacy_policy.html';
+      'https://cristianbravo-dev.web.app/es/privacy/horasmedicas';
 
   @override
   void initState() {

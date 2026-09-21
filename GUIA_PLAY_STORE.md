@@ -97,8 +97,17 @@ android/key.properties
    - **Nombre de la app:** Horas Médicas
    - **Idioma predeterminado:** Español (Chile)
    - **Tipo:** Aplicación o juego
-   - **Categoría:** Medicina
+   - **Categoría:** **Estilo de vida** o **Herramientas** (NO "Medicina")
 3. Acepta las declaraciones y crea
+
+> **⚠️ No uses la categoría "Medicina".** Google exige que las apps en esa
+> categoría (o que declaren funciones médicas/de salud) se publiquen desde
+> una **cuenta de organización** verificada (perfil D-U-N-S, entidad legal),
+> no desde una cuenta personal. Esto fue la causa real del rechazo de
+> v1.1.0 (16 feb 2026): "Infracción de los requisitos de Play Console —
+> categoría/función que requiere cuenta de organización". Horas Médicas no
+> presta atención médica ni maneja datos de salud, solo enlaza a sitios
+> externos, así que no necesita esa categoría ni una cuenta de organización.
 
 ---
 
@@ -127,7 +136,7 @@ En el menú lateral: **"Ficha de la tienda"** → **"Ficha de la tienda principa
 ## Paso 7: Política de privacidad
 
 1. Menú **"Política"** → **"Política de privacidad"**
-2. URL: `https://operonte.github.io/releases/horasmedicas/policies/privacy_policy.html`
+2. URL: `https://cristianbravo-dev.web.app/es/privacy/horasmedicas`
 
 ---
 
@@ -160,7 +169,7 @@ En el menú lateral: **"Ficha de la tienda"** → **"Ficha de la tienda principa
 
 - **Play Console:** https://play.google.com/console
 - **Documentación Flutter (Android):** https://docs.flutter.dev/deployment/android
-- **Política de privacidad:** https://operonte.github.io/releases/horasmedicas/policies/privacy_policy.html
+- **Política de privacidad:** https://cristianbravo-dev.web.app/es/privacy/horasmedicas
 
 ---
 

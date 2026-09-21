@@ -45,7 +45,7 @@ El APK se genera en `build/app/outputs/flutter-apk/app-release.apk`
 
 ## Política de Privacidad
 
-https://operonte.github.io/releases/horasmedicas/policies/privacy_policy.html
+https://cristianbravo-dev.web.app/es/privacy/horasmedicas
 
 ## Desarrollador
 

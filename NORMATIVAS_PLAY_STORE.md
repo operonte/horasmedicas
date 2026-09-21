@@ -33,21 +33,30 @@ En Play Console: **Política** → **Seguridad de los datos** → Declarar que n
 
 ### 2. Política de privacidad
 
-- **URL:** `https://operonte.github.io/releases/horasmedicas/policies/privacy_policy.html`
+- **URL:** `https://cristianbravo-dev.web.app/es/privacy/horasmedicas`
 - Debe estar accesible públicamente (sin login)
 - Ya publicada y funcionando
 
 ---
 
-### 3. Clasificación de contenido
+### 3. Clasificación de contenido y categoría
 
-Para Horas Médicas (app médica/salud, solo enlaces):
+Horas Médicas es un **directorio de enlaces** (utilidad/estilo de vida), no una
+app médica: no presta atención médica, no diagnostica ni maneja datos de
+salud, solo abre en el navegador los sitios web públicos de cada clínica.
 
-- Contenido: información de salud
+- **Categoría de la app:** Estilo de vida o Herramientas — **evita
+  "Medicina"/"Salud"**. Google exige cuenta de organización verificada
+  (D-U-N-S, entidad legal) para publicar en esas categorías o al declarar
+  funciones médicas/de salud; una cuenta personal será rechazada
+  ("Infracción de los requisitos de Play Console"). Esto fue lo que pasó
+  con v1.1.0 (rechazada el 16 feb 2026).
+- Contenido: ninguno generado por la app (solo enlaces externos)
 - No tiene: compras, anuncios, ubicación, datos personales
-- Resultado esperado: **Para todos los públicos** o **PEGI 3**
+- Resultado esperado del cuestionario: **Para todos los públicos** o **PEGI 3**
 
-Responde el cuestionario con sinceridad.
+Responde el cuestionario con sinceridad y evita mencionar "atención médica"
+o "salud" como función propia de la app al describirla.
 
 ---
 

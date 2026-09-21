@@ -46,17 +46,7 @@ class ClinicCard extends StatelessWidget {
         label: 'Abrir página web de ${clinic.name}',
         button: true,
         child: ListTile(
-          leading: CircleAvatar(
-            backgroundColor: clinic.avatarColor,
-            child: Text(
-              clinic.initial,
-              style: const TextStyle(
-                color: Colors.white,
-                fontWeight: FontWeight.bold,
-                fontSize: 18,
-              ),
-            ),
-          ),
+          leading: _ClinicAvatar(clinic: clinic),
           title: Text(
             clinic.name,
             style: const TextStyle(fontSize: 18, fontWeight: FontWeight.w500),
@@ -108,6 +98,49 @@ class ClinicCard extends StatelessWidget {
             ],
           ),
           onTap: () => _openWeb(context),
+        ),
+      ),
+    );
+  }
+}
+
+/// Avatar de la clínica: logo local si está disponible, si no un círculo
+/// de color con la inicial. Los logos viven en `assets/clinics/` (nunca se
+/// piden por red), así que no hay fuga de privacidad hacia terceros.
+class _ClinicAvatar extends StatelessWidget {
+  const _ClinicAvatar({required this.clinic});
+
+  final ClinicLink clinic;
+
+  Widget _fallback() {
+    return CircleAvatar(
+      backgroundColor: clinic.avatarColor,
+      child: Text(
+        clinic.initial,
+        style: const TextStyle(
+          color: Colors.white,
+          fontWeight: FontWeight.bold,
+          fontSize: 18,
+        ),
+      ),
+    );
+  }
+
+  @override
+  Widget build(BuildContext context) {
+    final logoAsset = clinic.logoAsset;
+    if (logoAsset == null) return _fallback();
+
+    return CircleAvatar(
+      backgroundColor: Colors.white,
+      child: ClipOval(
+        child: Padding(
+          padding: const EdgeInsets.all(6),
+          child: Image.asset(
+            logoAsset,
+            fit: BoxFit.contain,
+            errorBuilder: (context, error, stackTrace) => _fallback(),
+          ),
         ),
       ),
     );

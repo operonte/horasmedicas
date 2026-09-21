@@ -17,11 +17,18 @@ class ClinicLink {
   /// la acción "Llamar" para datos no confirmados.
   final String? phone;
 
+  /// Ruta al logo de la clínica empaquetado como asset local (opcional).
+  /// Se sirve desde `assets/clinics/`: nunca se pide a un servicio externo
+  /// (evita filtrar a terceros qué clínicas consulta cada usuario). Si es
+  /// `null`, la tarjeta usa el avatar de color + inicial como respaldo.
+  final String? logoAsset;
+
   const ClinicLink({
     required this.name,
     required this.url,
     required this.domain,
     this.phone,
+    this.logoAsset,
   });
 
   /// Inicial para el avatar (primera letra del nombre).
@@ -65,41 +72,49 @@ class ClinicLink {
       name: 'Clínica MEDS',
       url: 'https://www.meds.cl/',
       domain: 'meds.cl',
+      logoAsset: 'assets/clinics/meds.png',
     ),
     ClinicLink(
       name: 'Clínica FUSAT',
       url: 'https://www.fusat.cl/',
       domain: 'fusat.cl',
+      logoAsset: 'assets/clinics/fusat.png',
     ),
     ClinicLink(
       name: 'Clínica Isamédica',
       url: 'https://clinicaisamedica.cl/',
       domain: 'clinicaisamedica.cl',
+      logoAsset: 'assets/clinics/isamedica.png',
     ),
     ClinicLink(
       name: 'IntegraMédica',
       url: 'https://www.integramedica.cl/',
       domain: 'integramedica.cl',
+      logoAsset: 'assets/clinics/integramedica.png',
     ),
     ClinicLink(
       name: 'Clínica Intersalud',
       url: 'https://www.intersalud.cl/',
       domain: 'intersalud.cl',
+      logoAsset: 'assets/clinics/intersalud.png',
     ),
     ClinicLink(
       name: 'TorreMédica',
       url: 'https://www.torremedica.cl/',
       domain: 'torremedica.cl',
+      logoAsset: 'assets/clinics/torremedica.png',
     ),
     ClinicLink(
       name: 'RedSalud',
       url: 'https://www.redsalud.cl/',
       domain: 'redsalud.cl',
+      logoAsset: 'assets/clinics/redsalud.png',
     ),
     ClinicLink(
       name: 'CleverSalud',
       url: 'https://cleversalud.cl/',
       domain: 'cleversalud.cl',
+      logoAsset: 'assets/clinics/cleversalud.png',
     ),
   ];
 }
